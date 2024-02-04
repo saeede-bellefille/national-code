@@ -27,10 +27,9 @@ func start(address string) error {
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	v1 := r.Group("/api/v1")
 	{
-		v1.GET("/check", check)
+		v1.POST("/check", check)
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.POST("/check", check)
 	return r.Run(address)
 }
 
@@ -40,8 +39,10 @@ func start(address string) error {
 // @Tags national code
 // @Accept json
 // @Produce json
-// @Success 200 {Request} {Response}
-// @Router /check [get]
+// @Param request body Request true "Provide national id information."
+// @Success 200 {object} Response
+// @Failure 400 {object} ErrorResponse
+// @Router /check [post]
 func check(c *gin.Context) {
 	var request Request
 	if err := c.BindJSON(&request); err != nil {

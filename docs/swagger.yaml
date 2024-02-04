@@ -1,18 +1,47 @@
+definitions:
+  main.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  main.Request:
+    properties:
+      id:
+        type: string
+    type: object
+  main.Response:
+    properties:
+      city:
+        type: string
+      valid:
+        type: boolean
+    type: object
 info:
   contact: {}
 paths:
   /check:
-    get:
+    post:
       consumes:
       - application/json
       description: do check national code
+      parameters:
+      - description: Provide national id information.
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.Request'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: Request
+            $ref: '#/definitions/main.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
       summary: ': check national code'
       tags:
       - national code
