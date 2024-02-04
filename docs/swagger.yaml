@@ -1,0 +1,19 @@
+info:
+  contact: {}
+paths:
+  /check:
+    get:
+      consumes:
+      - application/json
+      description: do check national code
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: Request
+      summary: ': check national code'
+      tags:
+      - national code
+swagger: "2.0"

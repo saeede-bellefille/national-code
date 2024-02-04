@@ -5,6 +5,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/saeede-bellefille/national-code/docs"
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Request struct {
@@ -21,10 +24,24 @@ type ErrorResponse struct {
 
 func start(address string) error {
 	r := gin.Default()
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	v1 := r.Group("/api/v1")
+	{
+		v1.GET("/check", check)
+	}
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.POST("/check", check)
 	return r.Run(address)
 }
 
+// check godoc
+// @Summary : check national code
+// @Description do check national code
+// @Tags national code
+// @Accept json
+// @Produce json
+// @Success 200 {Request} {Response}
+// @Router /check [get]
 func check(c *gin.Context) {
 	var request Request
 	if err := c.BindJSON(&request); err != nil {
